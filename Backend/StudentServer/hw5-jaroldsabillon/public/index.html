@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="styles/style.css">
+
+  <title>Student Records</title>
+</head>
+
+<body>
+  <div id="section1" class="mt-5 p-4 bg-dark text-white text-center mt-auto">
+    <h1 id="header">Student Server</h1>
+  </div>
+  <div id="content" class="container mt-5 d-flex flex-column flex-row">
+    <p> *Parameters to create or update student</p>
+    <div class="form-group">
+      <label for="first_name" name="first_name">First Name</label>
+      <input type="text" class="form-control" id="first_name" name="first_name" placeholder="John">          <!-- Input for firstname -->
+    </div>
+    <div class="form-group">
+      <label for="last_name" name="last_name">Last Name</label>
+      <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Doe">              <!-- Input for lastname -->
+    </div>
+    <div class="form-group">
+      <label for="GPA" name="GPA">GPA</label>
+      <input type="text" class="form-control" id="GPA" name="GPA" placeholder="4.00">                         <!-- Input for gpa -->
+    </div>
+    <div class="form-group">
+      <label for="enrollment" name="enrollment">Enrolled</label>
+      <input type="text" class="form-control" id="enrollment" name="enrollment" placeholder="true/false">       <!-- Input for enrollment -->
+    </div>
+    <button onclick="postStudent()" type="submit" class="btn btn-primary">Post New student</button>             <!-- button for new student-->
+    <br>
+    <div class="form-group">
+      <label for="record_id" name="record_id">For getting/updating/deleting student record with name or ID
+        *Capitalization matters. </label>
+
+      <input type="text" class="form-control" id="record_id" name="record_id" placeholder="#12344567" value="null">     <!-- Input for record_id -->
+    </div>
+    <button onclick=" getStudent()" type="submit" class="btn btn-primary">Search Student: ID or fullname</button>     <!-- button to get student-->
+    <p>*Leave as null to get all students</p>
+    <button onclick="updateStudent()" type="submit" class="btn btn-primary">Update Student: use ID</button>             <!-- button to update student-->
+    <p>*Uses input from above as new parameters *requires student ID. Get by searching student name</p>
+    <button onclick="deleteStudent()" type="submit" class="btn btn-primary">Delete Student: ID or fullname</button>         <!-- button to delete student-->
+    <p>*Enter "all" to delete all student files</p>       
+    <div class="form-group">
+      <label for="mydiv">Retrieved Information</label>
+      <textarea class="form-control" id="mydiv" name="mydiv" rows="10"></textarea>
+    </div>
+    <p><em>Links for Documentation</em></p>
+    <a id="function" href="out\index.html" target="_blank">Function Documentation</a>
+    <a>Can also be used to POST/GET/PUT/DELETE</a>
+    <a id="express" href="docs/#/" target="_blank">Expression Documentation</a>
+    <br>
+    <br>
+  </div>
+  <div id="footer" class="mt-5 p-4 bg-dark text-white text-center mt-auto">
+    <p>Made by: Jarold Sabillon Z:23638144</p>
+    <p>Spring 2022</p>
+  </div>
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script src="scripts/script.js"></script>
+  <script type="javascript" src="..studentserver.js"></script>
+  <script src="styles/style.css"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</body>
+
+</html>

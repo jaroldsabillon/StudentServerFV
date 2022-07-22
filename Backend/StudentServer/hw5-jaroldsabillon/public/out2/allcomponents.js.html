@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: allcomponents.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: allcomponents.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>
+/**
+ * Returns whether new student record was created or if there is a duplicate
+ * @param {string} first_name firstname
+ * @param {string} last_name lastname
+ * @param {number} gpa gpa of student
+ * @param {boolean} enrolled enrollment status
+ * @returns {object} { ID: 123456
+ *                      status: successful/failed } 
+ */
+ function AddStudent() {
+
+    let [first_name, setFirst_name] = useState("");
+    let [last_name, setLast_name] = useState("");
+    let [gpa, setgpa] = useState("");                           //Variables to update DOM with
+    let [enrolled, setEnrolled] = useState("");
+    let [response, setResponse] = useState("");
+    const [error, setError] = useState(null);
+  
+    let sendStudent = (e) => {
+      e.preventDefault();
+      console.log(first_name, last_name, gpa, enrolled);
+      console.log(response.message);
+      setError(null);
+      if ((!last_name &amp;&amp; !first_name) || (!last_name || !first_name)) {     //checks that fields have input
+        setError("Please enter first name and last name");
+      }
+      else {
+        axios.post('http://localhost:5678/students',        //sends to backend
+          {
+            first_name: first_name,
+            last_name: last_name,
+            gpa: gpa,
+            enrolled: enrolled,
+          })
+  
+          .then(function (response) {
+            // handle success
+            setFirst_name("");
+            setLast_name("");           /*  Resets input fields */
+            setgpa("");
+            setEnrolled("");
+            setError(false);
+            setResponse(response.data)
+  
+          });
+      }
+    }
+    return (
+      /*
+       * Form fields to enter student information
+       *
+       */
+      &lt;Form onSubmit={sendStudent}>
+        &lt;Form.Group className="mb-3" controlId="formFirstName">
+          &lt;Form.Label>First Name&lt;/Form.Label>
+          &lt;Form.Control type="text" placeholder="John" name="first_name" value={first_name}
+            onChange={(e) => { setFirst_name(e.target.value) }}
+          />
+        &lt;/Form.Group>
+        &lt;Form.Group className="mb-3" controlId="formLastName">
+          &lt;Form.Label>Last Name&lt;/Form.Label>
+          &lt;Form.Control type="text" placeholder="Doe" name="last_name" value={last_name}
+            onChange={(e) => { setLast_name(e.target.value) }}
+          />
+        &lt;/Form.Group>
+        &lt;Form.Group className="mb-3" controlId="formGpa">
+          &lt;Form.Label>Gpa&lt;/Form.Label>
+          &lt;Form.Control type="number" placeholder="4.00" name="gpa" value={gpa}
+            onChange={(e) => { setgpa(e.target.value) }}
+          />
+        &lt;/Form.Group>
+  
+        &lt;Form.Group className="mb-3" controlId="formBasicCheckbox">
+          &lt;Form.Check type="checkbox" label="Check if enrolled" value='false' onChange={(e) => { setEnrolled("true") }} />
+        &lt;/Form.Group>
+        &lt;Form.Group className="mb-3" controlId="formBasicCheckbox">
+          &lt;Form.Check type="checkbox" label="Check if not enrolled" value='false' onChange={(e) => { setEnrolled("false") }} />
+        &lt;/Form.Group>
+  
+        &lt;Button variant="primary" id="submit" type="submit" >
+          Submit
+        &lt;/Button>
+        &lt;br /> &lt;br />
+        &lt;div> {response.message}&lt;/div>
+  
+      &lt;/Form>
+  
+    )
+  }
+  
+  /**
+ * Returns all student records
+ * @returns {object} { first_name: firstname
+ *                     last_name : lastname
+ *                     gpa: gpa 
+ *                     enrolled: enrollment
+ *                     full_name: firstnameLastname
+ *                      } 
+ */
+function AllStudents() {
+    const [ID, setID] = useState("null");
+    const [response, setResponse] = useState("");
+    const [Data, setData] = useState([]);                           //Variables to update DOM with
+    const [error, setError] = useState(null);
+    let sendStudent = (e) => {
+        e.preventDefault();
+        console.log(response.message);
+        console.log(response.data);
+        console.log("Attempted");
+        setError(null);
+        axios.get(`http://localhost:5678/students/${ID}`).then((response) => {//sends to backend
+            setData(response.data);
+        })
+    }
+    return (
+        &lt;Form onSubmit={sendStudent}>
+            &lt;Button variant="primary" id="submit" type="submit" >
+                Get All Students
+            &lt;/Button>
+            &lt;div> {response.message}&lt;/div>
+            &lt;br /> &lt;br />
+            {
+                Data.map((val, key) => {
+                    while (true) {
+                        return &lt;div key={key} className="data-container">
+                            &lt;table>
+                                &lt;tr>
+                                    &lt;th>ID&lt;/th>
+                                    &lt;th>First Name&lt;/th>
+                                    &lt;th>Last Name&lt;/th>
+                                    &lt;th>GPA&lt;/th>
+                                    &lt;th>Enrolled&lt;/th>
+                                &lt;/tr>
+                                &lt;tr>
+                                    &lt;td>{val._id}&lt;/td>
+                                    &lt;td>{val.first_name}&lt;/td>
+                                    &lt;td>{val.last_name}&lt;/td>
+                                    &lt;td>{val.gpa}&lt;/td>
+                                    &lt;td>{val.enrolled}&lt;/td>
+                                &lt;/tr>
+
+                            &lt;/table>
+
+                        &lt;/div>
+                    }
+                })
+            }
+        &lt;/Form>
+    )
+}
+
+/**
+ * Deletes student record or not found
+ * @param {number} ID Can be either the student name or the students ID
+ * @returns {object} { status: successful/failed } 
+ */
+ function DeleteStudent() {
+    const [ID, setID] = useState("");
+    let [response, setResponse] = useState("");                     //Variables to update DOM with
+    const [error, setError] = useState(null);
+    let sendStudent = (e) => {
+        e.preventDefault();
+        console.log(response.message);
+        setError(null);
+        if (!ID) {
+            setError("Please enter student ID");
+        }
+        else {
+            axios.delete(`http://localhost:5678/students/${ID}`, {//sends to backend
+                ID: ID
+            })
+                .then(function (response) {
+                    // handle success
+                    setID("");
+                    setError(false);
+                    setResponse(response.data)
+                });
+        }
+    }
+    return (
+        &lt;Form onSubmit={sendStudent}>
+            &lt;Form.Group className="mb-3" controlId="formID">
+                &lt;Form.Label>Student ID to delete&lt;/Form.Label>
+                &lt;Form.Control type="text" placeholder="John" name="id" value={ID}
+                    onChange={(e) => { setID(e.target.value) }}
+                />
+            &lt;/Form.Group>
+            &lt;Button variant="primary" id="submit" type="submit" >
+                Submit
+            &lt;/Button>
+            &lt;br /> &lt;br />
+            &lt;div> {response.message}&lt;/div>
+            &lt;Footer />
+        &lt;/Form>
+    )
+}
+
+
+/**
+ * Returns student record or not found
+ * @param {string} record_id Can be either the student name or the students ID
+ * @returns {object} { first_name: firstname
+ *                     last_name : lastname
+ *                     gpa: gpa 
+ *                     enrolled: enrollment
+ *                     status: successful/failed } 
+ */
+ function SearchStudent() {
+    const [ID, setID] = useState("");
+    const [response, setResponse] = useState("");
+    const [Data, setData] = useState([]);                         //Variables to update DOM with
+    const [error, setError] = useState(null);
+    let sendStudent = (e) => {
+      e.preventDefault();
+      console.log("Searching Student");
+      setError(null);
+      if (!ID) {
+        setError("Please enter ID or name");
+      }
+      else {
+        axios.get(`http://localhost:5678/students/${ID}`).then((response) => {     //connects to backend
+          setData(response.data);
+          setResponse(response.message);
+        })
+          .then(function (response) {
+            // handle success
+            setError(false);
+            setData(response.data)        //Student information to be displayed
+            setID("");              //ResetsID
+  
+            console.log(response.data);
+          }).catch(function (error) {
+           // handle error
+            if (error.response.status == 400) {
+              console.log(error);
+              setID("");                    //empties field after submit
+              setError("Cant find record")
+            }
+            else {
+              setError("Unexpected Error")
+            }
+  
+          })
+      }
+    }
+    return (
+  
+      /*
+     * Form fields to enter student name or ID
+     *
+     */
+      &lt;Form onSubmit={sendStudent}>
+        &lt;Form.Group className="mb-3" controlId="formID">
+          &lt;Form.Label>Enter Student name or ID to retrieve&lt;/Form.Label>
+          &lt;Form.Control type="text" placeholder="John" name="id" value={ID}     /*Input fields*/
+            onChange={(e) => { setID(e.target.value) }}/>
+        &lt;/Form.Group>
+        &lt;Button variant="primary" id="submit" type="submit" >
+          Submit
+        &lt;/Button>
+        &lt;br /> &lt;br />&lt;div>
+  
+          {Data &amp;&amp; (!Data.length || Data.length === 0) &amp;&amp; 
+          &lt;p>Student was not found&lt;/p>}                          
+          {Data &amp;&amp; Data.length > 0 &amp;&amp; &lt;>
+            &lt;table>
+              &lt;thead>
+                &lt;tr>
+                  &lt;th>Record ID&lt;/th>
+                  &lt;th>First Name&lt;/th>
+                  &lt;th>Last Name&lt;/th>
+                  &lt;th>GPA&lt;/th>
+                  &lt;th>Enrolled&lt;/th>
+                &lt;/tr>
+              &lt;/thead>
+              &lt;tbody>
+                {
+                  Data.map(res => {
+                    return (
+                      &lt;tr key={res._id}>
+                        &lt;td>{res._id}&lt;/td>
+                        &lt;td>{res.first_name}&lt;/td>
+                        &lt;td>{res.last_name}&lt;/td>          
+                        &lt;td>{res.gpa}&lt;/td>
+                        &lt;td>{res.enrolled}&lt;/td>
+                      &lt;/tr>
+                    )
+                  })}
+              &lt;/tbody>
+            &lt;/table>
+          &lt;/>}
+        &lt;/div>
+      &lt;/Form>
+    )
+  }
+
+  /**
+ * Returns whether new student record was created or if there is a duplicate
+ * @param {number}  ID        Student ID
+ * @param {string} first_name firstname
+ * @param {string} last_name lastname
+ * @param {number} gpa gpa of student
+ * @param {boolean} enrolled enrollment status
+ * @returns {object} { ID: 123456
+ *                      status: successful/failed } 
+ */
+function UpdateStudent() {
+    let [first_name, setFirst_name] = useState("");
+    let [last_name, setLast_name] = useState("");
+    let [gpa, setgpa] = useState("");                       //Variables to update DOM with
+    let [enrolled, setEnrolled] = useState("");
+    let [response, setResponse] = useState("");
+    let [ID, setID] = useState("");
+    const [error, setError] = useState(null);
+    let sendStudent = (e) => {
+      e.preventDefault();
+      console.log(first_name, last_name, gpa, enrolled);
+      console.log(response.message);
+      setError(null);
+      if ((!last_name &amp;&amp; !first_name) || (!last_name || !first_name)) {
+        setError("Please enter first name and last name");
+      }
+      else if (!ID) {
+        setError("Please enter a student ID")
+      }
+      else {
+        axios.put(`http://localhost:5678/students/${ID}`,//sends to backend
+          {
+            first_name: first_name,
+            last_name: last_name,
+            gpa: gpa,
+            enrolled: enrolled,
+          })
+          .then(function (response) {
+            // handle success
+            setFirst_name("");
+            setLast_name("");
+            setgpa("");                   /*  Resets input fields */
+            setEnrolled("");
+            setID("");
+            setError(false);
+            setResponse(response.data)        //Gets info from backend
+          });
+      }
+    }
+    return (
+      /*
+      * Form fields to enter student information
+      *
+      */
+      &lt;Form onSubmit={sendStudent}>
+        &lt;Form.Group className="mb-3" controlId="formID">
+          &lt;Form.Label>Student ID&lt;/Form.Label>
+          &lt;Form.Control type="text" placeholder="#123456" name="ID" value={ID}
+            onChange={(e) => { setID(e.target.value) }}
+          />
+        &lt;/Form.Group>
+        &lt;Form.Group className="mb-3" controlId="formFirstName">
+          &lt;Form.Label>First Name&lt;/Form.Label>
+          &lt;Form.Control type="text" placeholder="John" name="first_name" value={first_name}
+            onChange={(e) => { setFirst_name(e.target.value) }}
+          />
+        &lt;/Form.Group>
+        &lt;Form.Group className="mb-3" controlId="formLastName">
+          &lt;Form.Label>Last Name&lt;/Form.Label>
+          &lt;Form.Control type="text" placeholder="Doe" name="last_name" value={last_name}
+            onChange={(e) => { setLast_name(e.target.value) }}
+          />
+        &lt;/Form.Group>
+        &lt;Form.Group className="mb-3" controlId="formGpa">
+          &lt;Form.Label>Gpa&lt;/Form.Label>
+          &lt;Form.Control type="number" placeholder="4.00" name="gpa" value={gpa}
+            onChange={(e) => { setgpa(e.target.value) }}
+          />
+        &lt;/Form.Group>
+        &lt;Form.Group className="mb-3" controlId="formBasicCheckbox">
+          &lt;Form.Check type="checkbox" label="Check if enrolled" value='false' onChange={(e) => { setEnrolled(true) }} />
+        &lt;/Form.Group>
+        &lt;Form.Group className="mb-3" controlId="formBasicCheckbox">
+          &lt;Form.Check type="checkbox" label="Check if not enrolled" value='false' onChange={(e) => { setEnrolled(false) }} />
+        &lt;/Form.Group>
+        &lt;Button variant="primary" id="submit" type="submit">
+          Submit
+        &lt;/Button>
+        &lt;br /> &lt;br />
+        &lt;div> {response.message}&lt;/div>
+      &lt;/Form>
+    )
+  }</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#AddStudent">AddStudent</a></li><li><a href="global.html#AllStudents">AllStudents</a></li><li><a href="global.html#DeleteStudent">DeleteStudent</a></li><li><a href="global.html#SearchStudent">SearchStudent</a></li><li><a href="global.html#UpdateStudent">UpdateStudent</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Apr 14 2022 08:34:50 GMT-0400 (Eastern Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

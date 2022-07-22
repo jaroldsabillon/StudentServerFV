@@ -1,0 +1,15 @@
+
+#submit{
+  padding-left: 16%;
+  padding-right: 16%;
+  margin-left:5%;             /*  CSS for submit button  */
+}
+.footer {
+
+  background-color: rgb(29, 27, 20);
+  position:fixed;
+  width: 100%;                    /*  CSS for footer  */
+  color: white;
+  text-align: center;
+  font-size: 10px;
+}

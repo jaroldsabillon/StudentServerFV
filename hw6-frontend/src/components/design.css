@@ -1,0 +1,41 @@
+.form-control {
+  width: 50% !important;
+  text-align: center;
+}
+
+.form-label {
+  font-size: 20px;
+}
+
+Form {
+  margin-top: 20px;
+  padding-left: 33%;
+  margin-bottom: 10rem;
+  /*  CSS for Form */
+}
+
+table,
+tbody,
+thead,
+th,
+td,
+tr {
+  border: 1px solid;
+  margin-top: 20px;
+  /*  CSS for Table to display student information*/
+  padding: 10px;
+  text-align: center;
+}
+
+.footer {
+ 
+  background-color: rgb(29, 27, 20);
+  margin-bottom: 0px;
+  bottom: 0;
+  /*  CSS fro footer in All students only  */
+  left: 0;
+  width: 100%;
+  color: white;
+  text-align: center;
+  font-size: 11px;
+}
